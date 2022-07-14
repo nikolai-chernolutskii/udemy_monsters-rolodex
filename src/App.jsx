@@ -3,17 +3,20 @@ import { Component } from 'react';
 import './App.css';
 
 class App extends Component {
-
+  // Set the state of the component
   constructor() {
     super();
 
     this.state = {
       monsters: [], // Initial state of array will be empty prior to receiving external data, the null state
+
+      searchField: '' // The initial state of the search field is empty, hence all the monsters are displayed using the .map method in render() below
     };
 
     console.log('constructor')
   }
 
+  // Bring data from an external API
   componentDidMount() {
 
     console.log('componentDidMount')
@@ -22,8 +25,8 @@ class App extends Component {
       .then((response) => response.json())
       .then((users) => this.setState(
         () => {
-        return { monsters: users }
-      },
+          return { monsters: users }
+        },
         () => {
           console.log(this.state);
         }
@@ -34,7 +37,11 @@ class App extends Component {
 
     console.log('render')
 
-    
+    const filteredMonsters = this.state.monsters.filter(
+      (monster) => {
+        return monster.name.toLocaleLowerCase().includes(this.state.searchField);
+      }); /* describing the list of filtered monsters including the _empty_ search field */
+    // We move this variable outside the return (below) because we always want to be able to come back to the original state when we unfilter the new array
 
     return (
       <div className="App">
@@ -43,34 +50,29 @@ class App extends Component {
 
           onChange={
             (event) /* We are going to get back an event */ => {
-            console.log(event);
+              console.log(event);
 
-            const searchString = event.target.value.toLocaleLowerCase(); /* describing the search string and making it lowercase */
+              const searchField = event.target.value.toLocaleLowerCase(); /* describing the _non-empty_ search field and making it lowercase */
 
-            const filteredMonsters = this.state.monsters.filter(
-              (monster) => {
-                return monster.name.toLocaleLowerCase().includes(searchString);
-              }); /* describing the list of filtered monsters including the search string */
-
-            this.setState(
-              () => {
-              return { monsters: filteredMonsters };
-            }) /* setting the state to the list of filtered monsters */
-          }
+              this.setState(
+                () => {
+                  return { searchField };
+                }) /* setting the state to the list of _filtered_ monsters */
+            }
           }
 
         />
 
         {
-          this.state.monsters.map((monster) => {
+          filteredMonsters.map((monster) => {
             return (
               <div key={monster.id}>
                 <h1>{monster.name}</h1>
               </div>
-            ) 
-          }) /* describing the unfiltered list using the .map method */
-        } 
-        
+            )
+          }) /* Then we map over the _filteredMonsters_ constant instead of _this.state_, describing the unfiltered list using the .map method */
+        }
+
       </div>
     )
   }
