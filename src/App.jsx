@@ -1,7 +1,6 @@
 import { Component } from 'react';
-
 import CardList from './components/card-list/card-list.component';
-
+import SearchBox from './components/search-box/search-box.component';
 import './App.css';
 
 class App extends Component {
@@ -20,7 +19,6 @@ class App extends Component {
   // Bring data from an external API
   componentDidMount() {
 
-
     fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => response.json())
       .then((users) => this.setState(
@@ -38,12 +36,12 @@ class App extends Component {
       () => {
         return { searchField };
       });
-  } // Moving this function into the class so that it initialized just once, on the first initialization of the class
+  } // Moving this function into the class so that it is initialized just once, on the first initialization of the class
 
 
   render() {
 
-
+    console.log('render from AppJS')
     const { monsters, searchField } = this.state;
     const { onSearchChange } = this;
 
@@ -55,28 +53,14 @@ class App extends Component {
     return (
       <div className="App">
 
-        <input
-          className='search-box'
-          type='search'
-          placeholder='Search monsters'
+        
 
-          onChange={onSearchChange}
-        />
-
-        {
-          // filteredMonsters.map(
-          //   (monster) => {
-          //   return (
-          //     <div key={monster.id}>
-          //       <h1>{monster.name}</h1>
-          //     </div>
-          //   )
-          // })
-        }
+        <SearchBox onChangeHandler={onSearchChange} placeholder='Search monsters' className='search-box'/>
 
         <CardList  monsters={filteredMonsters} />
 
       </div>
+      // <CardList /> component has the "monsters" property (props) with the {filteredMonsters} value
     )
   }
 }
