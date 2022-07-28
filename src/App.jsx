@@ -1,5 +1,6 @@
 import { Component } from 'react';
-
+import CardList from './components/card-list/card-list.component';
+import SearchBox from './components/search-box/search-box.component';
 import './App.css';
 
 class App extends Component {
@@ -13,41 +14,34 @@ class App extends Component {
       searchField: '' // The initial state of the search field is empty, hence all the monsters are displayed using the .map method in render() below
     };
 
-    console.log('constructor')
   }
 
   // Bring data from an external API
   componentDidMount() {
-
-    console.log('componentDidMount')
 
     fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => response.json())
       .then((users) => this.setState(
         () => {
           return { monsters: users }
-        },
-        () => {
-          console.log(this.state);
         }
       ));
   }
 
   onSearchChange = (event) => {
-              
+
     const searchField = event.target.value.toLocaleLowerCase();
 
     this.setState(
       () => {
         return { searchField };
       });
-  } // Moving this function into the class so that it initialized just once, on the first initialization of the class
+  } // Moving this function into the class so that it is initialized just once, on the first initialization of the class
 
 
   render() {
 
-    console.log('render')
-
+    console.log('render from AppJS')
     const { monsters, searchField } = this.state;
     const { onSearchChange } = this;
 
@@ -59,23 +53,14 @@ class App extends Component {
     return (
       <div className="App">
 
-        <input className='search-box' type='search' placeholder='Search monsters'
+        
 
-          onChange={onSearchChange}
+        <SearchBox onChangeHandler={onSearchChange} placeholder='Search monsters' className='search-box'/>
 
-        />
+        <CardList  monsters={filteredMonsters} />
 
-        {
-          filteredMonsters.map(
-            (monster) => {
-            return (
-              <div key={monster.id}>
-                <h1>{monster.name}</h1>
-              </div>
-            )
-          })
-        }
       </div>
+      // <CardList /> component has the "monsters" property (props) with the {filteredMonsters} value
     )
   }
 }
