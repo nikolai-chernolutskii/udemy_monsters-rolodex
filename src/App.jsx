@@ -53,11 +53,11 @@ class App extends Component {
     return (
       <div className="App">
 
-        
+      <h1 className='app-title'>Monsters Rolodex</h1>
 
-        <SearchBox onChangeHandler={onSearchChange} placeholder='Search monsters' className='search-box'/>
+        <SearchBox onChangeHandler={onSearchChange} placeholder='Search monsters' className='monsters-search-box'/>
 
-        <CardList  monsters={filteredMonsters} />
+        <CardList monsters={filteredMonsters} />
 
       </div>
       // <CardList /> component has the "monsters" property (props) with the {filteredMonsters} value
