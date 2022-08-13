@@ -15,6 +15,7 @@ const App = () => {
       .then((response) => response.json())
       .then((users) => setMonsters(users));
   }, []);
+  // callback function containing the code we want to be inside of our hook + array of dependencies containing the dependencies (if any) that, if changed, will trigger the callback function
 
   useEffect(() => {
     const newFilteredMonsters = monsters.filter((monster) => {
@@ -41,8 +42,8 @@ const App = () => {
 
     </div>
 
-  )
-}
+  );
+};
 
 // class App extends Component {
 //   // Set the state of the component
